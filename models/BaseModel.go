@@ -8,11 +8,12 @@ type BaseModel struct {
 // PostListModel ...
 type PostListModel struct {
 	BaseModel
-	EmptyMsg bool
-	Exist    bool
-	Posts    []Post
-	Cat      string
-	IsCat    bool
+	EmptyMsg  bool
+	Exist     bool
+	Posts     []Post
+	Cat       string
+	IsCat     bool
+	CheckPass bool
 }
 
 // EditPostModel ...

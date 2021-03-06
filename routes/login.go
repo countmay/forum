@@ -262,6 +262,43 @@ func (h *Handler) SigninHandler(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("password")
 
+		if len(password) < 7 {
+			model := models.PostListModel{}
+			model.CheckPass = true
+			h.Tmpl.ExecuteTemplate(w, "signin.html", model)
+		} else {
+			cnt := 0
+			cntSpec := 0
+			str := "~`!@$%^&*(){}<>"
+			for _, i := range password {
+				if i >= 'A' && i <= 'Z' {
+					cnt++
+					continue
+				}
+				if i >= '0' && i <= '9' {
+					cnt++
+					continue
+				}
+				if i == ' ' {
+					model := models.PostListModel{}
+					model.CheckPass = true
+					h.Tmpl.ExecuteTemplate(w, "signin.html", model)
+					break
+				}
+				for _, j := range str {
+					if i == j {
+						cntSpec++
+						break
+					}
+				}
+			}
+			if cnt < 2 && cntSpec == 0 {
+				model := models.PostListModel{}
+				model.CheckPass = true
+				h.Tmpl.ExecuteTemplate(w, "signin.html", model)
+			}
+		}
+
 		if EmptyMessage(userFirstName) || EmptyMessage(userLastName) || EmptyMessage(userEmail) || EmptyMessage(username) || EmptyMessage(password) {
 			model := models.PostListModel{}
 			model.EmptyMsg = true

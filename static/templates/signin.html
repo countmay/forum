@@ -22,6 +22,12 @@
     </fieldset>
 </form>
 
+{{if .CheckPass}}
+<script>
+    alert("Пароль должен быть длиннее 7 символов. Заглавная буква, цифра, спецсимвол")
+</script>
+{{end}}
+
 {{if .EmptyMsg}}
     <script>
         alert("вы отправили пустое сообщение")
