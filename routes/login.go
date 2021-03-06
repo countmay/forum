@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"../models"
@@ -21,6 +22,13 @@ type Handler struct {
 	Db              *models.Database
 }
 
+// Errors ...
+type Errors struct {
+	Header int
+	Body   string
+}
+
+var ErrSet Errors
 var posts []models.Post
 var users []models.User
 var comments []models.Comment
@@ -36,7 +44,7 @@ const (
 // IndexHandler ...
 func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		fmt.Fprintf(w, "Error 404")
+		h.ErrorHandler(w, r, "404")
 		return
 	}
 	var authed bool
@@ -82,6 +90,10 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		username := r.FormValue("username")
 		password := r.FormValue("password")
+		if err := h.Tmpl.ExecuteTemplate(w, "login.html", nil); err != nil {
+			h.ErrorHandler(w, r, "500")
+			return
+		}
 		fmt.Println(username, password)
 		ok, key := h.InMemorySession.CheckUsersSession(username)
 		if ok {
@@ -128,6 +140,10 @@ func (h *Handler) SigninHandler(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("password")
 
+		if err := h.Tmpl.ExecuteTemplate(w, "signin.html", nil); err != nil {
+			h.ErrorHandler(w, r, "500")
+			return
+		}
 		if EmptyMessage(userFirstName) || EmptyMessage(userLastName) || EmptyMessage(userEmail) || EmptyMessage(username) || EmptyMessage(password) {
 			model := models.PostListModel{}
 			model.EmptyMsg = true
@@ -422,4 +438,21 @@ func reverseArray() {
 	for i, j := 0, len(posts)-1; i < j; i, j = i+1, j-1 {
 		posts[i], posts[j] = posts[j], posts[i]
 	}
+}
+
+// ErrorHandler ...
+func (h *Handler) ErrorHandler(w http.ResponseWriter, r *http.Request, status string) {
+	newHeader, _ := strconv.Atoi(status)
+	ErrSet.Header = newHeader
+	switch {
+	case newHeader == http.StatusNotFound:
+		ErrSet.Body = "The page you're looking for can't be found."
+	case newHeader == http.StatusInternalServerError:
+		ErrSet.Body = "Internal Server Error"
+	case newHeader == http.StatusBadRequest:
+		ErrSet.Body = "Bad request"
+	}
+	w.WriteHeader(newHeader)
+	h.Tmpl.ExecuteTemplate(w, "error.html", ErrSet)
+
 }
