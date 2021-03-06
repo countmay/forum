@@ -267,12 +267,13 @@ func (h *Handler) SigninHandler(w http.ResponseWriter, r *http.Request) {
 			model.CheckPass = true
 			h.Tmpl.ExecuteTemplate(w, "signin.html", model)
 		} else {
-			cnt := 0
+			cntUp := 0
 			cntSpec := 0
+			cnt := 0
 			str := "~`!@$%^&*(){}<>"
 			for _, i := range password {
 				if i >= 'A' && i <= 'Z' {
-					cnt++
+					cntUp++
 					continue
 				}
 				if i >= '0' && i <= '9' {
@@ -292,7 +293,7 @@ func (h *Handler) SigninHandler(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 			}
-			if cnt < 2 && cntSpec == 0 {
+			if cnt == 0 || cntSpec == 0 || cntUp == 0 {
 				model := models.PostListModel{}
 				model.CheckPass = true
 				h.Tmpl.ExecuteTemplate(w, "signin.html", model)
