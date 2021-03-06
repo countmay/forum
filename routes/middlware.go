@@ -1,6 +1,11 @@
 package routes
 
-import "net/http"
+import (
+	"net/http"
+
+	"../models"
+	// ""
+)
 
 func (h *Handler) AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +17,10 @@ func (h *Handler) AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		if ok := h.InMemorySession.Authed(cookie.Value); !ok {
 			w.WriteHeader(http.StatusUnauthorized)
+			m := models.PostListModel{}
+			PrintPosts()
+			m.Posts = posts
+			h.Tmpl.ExecuteTemplate(w, "index.html", m)
 			return
 		}
 

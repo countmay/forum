@@ -86,6 +86,7 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		ok, key := h.InMemorySession.CheckUsersSession(username)
 		if ok {
 			h.InMemorySession.Delete(key)
+
 		}
 		if !CheckRepeat(username, "") {
 			model := models.PostListModel{}
@@ -168,6 +169,13 @@ func (h *Handler) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		PrintPosts()
+		cookie, _ := r.Cookie("sessionID")
+		data := h.InMemorySession.Data(cookie.Value)
+
+		ok, key := h.InMemorySession.CheckUsersSession(data.Username)
+		if ok {
+			h.InMemorySession.Delete(key)
+		}
 		model := models.PostListModel{}
 		// m.IsAuthorized = false
 		model.IsAuthorized = false
@@ -375,7 +383,7 @@ func ReactionCount(postUUID string) (int, int) {
 		}
 
 	}
-	fmt.Println(likes)
+
 	return likes, dislikes
 }
 

@@ -8,6 +8,7 @@ import (
 type SessionData struct {
 	Username     string
 	IsAuthorized bool
+	// Expiration time.time
 }
 
 // Session ...
