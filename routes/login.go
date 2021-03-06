@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"../models"
@@ -33,6 +34,10 @@ var posts []models.Post
 var users []models.User
 var comments []models.Comment
 var reactions []models.Reactions
+var love []models.Post
+var fashion []models.Post
+var beauty []models.Post
+var health []models.Post
 
 // var s session.SessionData
 
@@ -74,12 +79,97 @@ func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) WriteHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		model := models.PostListModel{}
-		model.IsAuthorized = true
-		model.Posts = posts
-		h.Tmpl.ExecuteTemplate(w, "write.html", model)
+		h.Tmpl.ExecuteTemplate(w, "write.html", r)
 	}
 
+}
+
+func (h *Handler) CategoryLoveHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		model := models.PostListModel{}
+		model.Cat = "Любовь"
+		PrintPosts()
+		for _, i := range posts {
+			str := strings.Split(i.Categories, ",")
+			for _, j := range str {
+				if j == "Любовь" {
+					love = append(love, i)
+					break
+				}
+			}
+		}
+		model.Posts = love
+		h.Tmpl.ExecuteTemplate(w, "category.html", model)
+		love = nil
+		posts = nil
+	}
+}
+
+func (h *Handler) CategoryFashionHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		model := models.PostListModel{}
+		model.Cat = "Мода"
+		PrintPosts()
+		for _, i := range posts {
+			str := strings.Split(i.Categories, ",")
+			for _, j := range str {
+				if j == "Мода" {
+					fashion = append(fashion, i)
+					break
+				}
+			}
+		}
+		model.Posts = fashion
+		h.Tmpl.ExecuteTemplate(w, "category.html", model)
+		fashion = nil
+		posts = nil
+	}
+}
+
+func (h *Handler) CategoryBeautyHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		model := models.PostListModel{}
+		model.Cat = "Красота"
+		PrintPosts()
+		for _, i := range posts {
+			str := strings.Split(i.Categories, ",")
+			for _, j := range str {
+				if j == "Красота" {
+					beauty = append(beauty, i)
+					break
+				}
+			}
+		}
+		model.Posts = beauty
+		h.Tmpl.ExecuteTemplate(w, "category.html", model)
+		beauty = nil
+		posts = nil
+	}
+}
+
+func (h *Handler) CategoryHealthHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		model := models.PostListModel{}
+		model.Cat = "Здоровье"
+		PrintPosts()
+		for _, i := range posts {
+			str := strings.Split(i.Categories, ",")
+			for _, j := range str {
+				if j == "Здоровье" {
+					health = append(health, i)
+					break
+				}
+			}
+		}
+		model.Posts = health
+		h.Tmpl.ExecuteTemplate(w, "category.html", model)
+		health = nil
+		posts = nil
+	}
 }
 
 // LoginHandler ...

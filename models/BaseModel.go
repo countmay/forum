@@ -11,6 +11,7 @@ type PostListModel struct {
 	EmptyMsg bool
 	Exist    bool
 	Posts    []Post
+	Cat      string
 }
 
 // EditPostModel ...

@@ -95,6 +95,10 @@ dislike integer DEFAULT 0,
 	router.HandleFunc("/logout", handler.LogoutHandler)
 	router.HandleFunc("/comment", handler.AuthMiddleware(handler.CommentHandler))
 	router.HandleFunc("/reactions", handler.AuthMiddleware(handler.ReactionHandler))
+	router.HandleFunc("/categoryLove", handler.CategoryLoveHandler)
+	router.HandleFunc("/categoryFashion", handler.CategoryFashionHandler)
+	router.HandleFunc("/categoryBeauty", handler.CategoryBeautyHandler)
+	router.HandleFunc("/categoryHealth", handler.CategoryHealthHandler)
 
 	server := new(http.Server)
 
