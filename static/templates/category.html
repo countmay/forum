@@ -6,13 +6,13 @@
     <title>Category</title>
 </head>
 <body>
+    <form method="POST" action="/write">
+        <input type="submit" style="position: absolute; right: 0; margin-top: 15px; margin-right: 10px" id="submit" value="Create post">
+    </form>
+    
     <h3 class="header__title">{{.Cat}}</h3>
     {{$IsAuthorized:= .IsAuthorized}}
-        {{if .IsAuthorized}}
-            <form method="POST" action="/write">
-                <input type="submit" style="position: absolute; right: 0; margin-top: 15px; margin-right: 10px" id="submit" value="Create post">
-            </form>
-        {{end}}
+       
         <div class="testbody">
 
             {{range .Posts}}

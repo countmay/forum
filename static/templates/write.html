@@ -4,11 +4,6 @@
 </head>
 
 <body>
-    {{range $value := .Posts}}
-        {{$value.Title}}
-        {{$value.Categories}}
-        {{$value.Body}}
-    {{end}}
 
     {{if .EmptyMsg}}
         <script>
@@ -16,7 +11,6 @@
         </script>
     {{end}}
 
-    {{if .IsAuthorized}}
     <h2 style="text-align: center;">Название поста</h2>
     <form method="POST" action="/SavePost">
 
@@ -38,7 +32,6 @@
 
         <input type="submit" name="post" style="position: absolute; left: 63%; top: 45%;" id="submit" value="post">
     </form>
-    {{end}}
 </body>
 
 

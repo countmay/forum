@@ -79,7 +79,9 @@ func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) WriteHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		h.Tmpl.ExecuteTemplate(w, "write.html", r)
+		model := models.PostListModel{}
+		model.IsAuthorized = true
+		h.Tmpl.ExecuteTemplate(w, "write.html", model)
 	}
 
 }
@@ -180,10 +182,7 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		username := r.FormValue("username")
 		password := r.FormValue("password")
-		if err := h.Tmpl.ExecuteTemplate(w, "login.html", nil); err != nil {
-			h.ErrorHandler(w, r, "500")
-			return
-		}
+
 		fmt.Println(username, password)
 		ok, key := h.InMemorySession.CheckUsersSession(username)
 		if ok {
@@ -230,10 +229,6 @@ func (h *Handler) SigninHandler(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("password")
 
-		if err := h.Tmpl.ExecuteTemplate(w, "signin.html", nil); err != nil {
-			h.ErrorHandler(w, r, "500")
-			return
-		}
 		if EmptyMessage(userFirstName) || EmptyMessage(userLastName) || EmptyMessage(userEmail) || EmptyMessage(username) || EmptyMessage(password) {
 			model := models.PostListModel{}
 			model.EmptyMsg = true
