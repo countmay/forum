@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="/static/styles/postStyle.css">
+</head>
+
+<body>
+    {{range $value := .Posts}}
+        {{$value.Title}}
+        {{$value.Categories}}
+        {{$value.Body}}
+    {{end}}
+
+    {{if .EmptyMsg}}
+        <script>
+            alert("вы отправили пустое сообщение")
+        </script>
+    {{end}}
+
+    {{if .IsAuthorized}}
+    <h2 style="text-align: center;">Название поста</h2>
+    <form method="POST" action="/SavePost">
+
+        <div class="title__container">
+            <textarea name="titleText" style="width: 100%; height: 100%; resize: none;"></textarea>
+        </div>
+
+        <input type="checkbox" name="categorieLove">Любовь
+        <input type="checkbox" name="categorieFashion">Мода
+        <input type="checkbox" name="categorieBeauty">Красота
+        <input type="checkbox" name="categorieHealth">Здоровье
+        <input type="checkbox" name="categoriePopular">Популярное
+
+        <h2 style="text-align: center;">Content</h2>
+
+      <div class="post__container">
+            <textarea name="postText" style="width: 100%; height: 100%; resize: none;"></textarea>
+      </div>
+
+        <input type="submit" name="post" style="position: absolute; left: 63%; top: 45%;" id="submit" value="post">
+    </form>
+    {{end}}
+</body>
+
+
+</html>

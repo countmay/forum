@@ -1,0 +1,19 @@
+body {
+    background-color: pink;
+}
+
+.post__container {
+    width: 39%;
+    margin: 0 auto;
+    margin-top: 0px;
+    height: 200px;
+    margin-top: 20px;
+  }
+
+  .title__container {
+    width: 39%;
+    margin: 0 auto;
+    margin-top: 0px;
+    height: 30px;
+    margin-top: 20px;
+  }

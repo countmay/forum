@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Регистрация</title>
+	<link rel="stylesheet" href="/static/styles/styleSignin.css">
+</head>
+
+<body>
+
+<form id="login" method="POST">
+    <h1>Регистрация</h1>
+    <fieldset id="inputs">
+        <input id="userFirstName" name="userFirstName" type="text" placeholder="Имя" autofocus required>
+        <input id="userLastName" name="userLastName" type="text" placeholder="Фамилия" required>
+        <input id="userEmail" name="userEmail" type="email" placeholder="Почта" required>
+        <input id="username" name="username" type="text" placeholder="Логин" required>   
+        <input id="password" name="password" type="password" placeholder="Пароль" required>
+    </fieldset>
+    <fieldset id="actions">
+        <input type="submit" name="submit" id="submit" value="Зарегистрироваться">
+    </fieldset>
+</form>
+
+{{if .EmptyMsg}}
+    <script>
+        alert("вы отправили пустое сообщение")
+    </script>
+{{end}}
+
+{{if .Exist}}
+    <script>
+        alert("Такой username или email существует")
+    </script>
+{{end}}
+
+</body>
+</html>

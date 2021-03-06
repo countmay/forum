@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/styles/style.css">
+</head>
+
+<body>
+
+    {{if .IsAuthorized}}
+    <form method="POST" action="/logout">
+        <input type="submit" style="position: absolute; right: 0; margin-top: 15px; margin-right: 10px" id="submit" value="Log out">
+    </form>
+    {{else}}
+    <form method="GET" action="/signin">
+        <input type="submit" style="position: absolute; right: 0; margin-top: 15px; margin-right: 140px" id="submit" value="Sign in">
+    </form>
+
+    <form method="GET" action="/login">
+        <input type="submit" name="login" style="position: absolute; right: 0; margin-top: 15px; margin-right: 10px" id="submit" value="Log in">
+    </form>
+    {{end}}
+
+    <h2 class="header__title">Женский Форум</h1>
+
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/write">Любовь</a>
+            <a href="/write">Мода</a>
+            <a href="/write">Красота</a>
+            <a href="/write">Здоровье</a>
+            <a href="/write">Популярное</a>
+            <div class="animation start-home"></div>
+        </nav>
+        {{$IsAuthorized:= .IsAuthorized}}
+        <div class="testbody">
+
+            {{range .Posts}}
+            <div class="post">
+                <div class="post-title">
+                    <h1>{{.Title}}</h1>
+                </div>
+                <div class="postbody">
+                    <h2>
+                        {{.Body}}
+                    </h2>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 1em">
+                    <form method="POST" action="/reactions">
+                        <div class="like">
+                            <input type="hidden" name="postUUID" value="{{.PostUuid}}">
+
+                            <input type="submit" name="reaction" src="/static/styles/like.png" alt="like" value="1_0">
+                            <img src="/static/styles/like.png" alt="like">
+                            <h2>
+                                {{.Like}}
+                            </h2>
+
+                            <input type="submit" name="reaction" style="margin-left: 40px;" src="/static/styles/dislike.png" alt="dislike" value="0_1">
+                            <h2>
+                                {{.Dislike}}
+                            </h2>
+                        </div>
+                    </form>
+                    <div style="width: 50%">
+                        <div class="author">
+                            <h3>
+                                Автор: {{.Username}}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="category">
+                    <h3>
+                        Категории: {{.Categories}}
+                    </h3>
+                </div>
+
+            </div>
+
+
+            {{range .Comments}}
+            <div class="comment">
+                <h2>{{.Body}} </h2>
+                <!-- тут расположен like and dislike для комментов-->
+                <div style="display: flex; justify-content: space-between; margin-top: 1em; margin-bottom: 8px;">
+                    <form method="POST" action="/reactions">
+                        <div class="like">
+                            <input type="hidden" name="postUUID" value="{{.CommentUUID}}">
+
+                            <input type="submit" name="reaction" src="/static/styles/like.png" alt="like" value="1_0">
+                            <img src="/static/styles/like.png" alt="like">
+                            <h2>
+                                {{.Like}}
+                            </h2>
+
+                            <input type="submit" name="reaction" style="margin-left: 40px;" src="/static/styles/dislike.png" alt="dislike" value="0_1">
+                            <h2>
+                                {{.Dislike}}
+                            </h2>
+                        </div>
+                    </form>
+                    <div style="width: 50%">
+                        <div class="author">
+                            <h3>
+                                Автор: {{.Author}}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--тут заканчивается блок с распечатанным комментом-->
+            </div>
+
+            {{end}} {{if $IsAuthorized}}
+            <form method="POST" action="/comment">
+
+                <textarea class="comment" name="comment" style="margin-top: 15px; resize: none;"></textarea>
+                <div name="postuuid">
+
+                </div>
+                <input type="hidden" name="postUUID" value="{{.PostUuid}}">
+                <input type="submit" style="margin-left: 80%;margin-top: 2%;" value="comment">
+            </form>
+
+            {{end}} {{end}}
+
+        </div>
+
+        <img id="girl" src="/static/styles/girl.png">
+
+</body>
+
+</html>
