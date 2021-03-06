@@ -332,22 +332,35 @@ func (h *Handler) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 		categoriePopular := r.FormValue("categoriePopular")
 
 		categorie := []string{}
+		cnt := 0
 		if categorieLove == "on" {
 			categorie = append(categorie, "Любовь")
+			cnt++
 		}
 		if categorieFashion == "on" {
 			categorie = append(categorie, "Мода")
+			cnt++
 		}
 		if categorieBeauty == "on" {
 			categorie = append(categorie, "Красота")
+			cnt++
 		}
 		if categorieHealth == "on" {
 			categorie = append(categorie, "Здоровье")
+			cnt++
 		}
 		if categoriePopular == "on" {
 			categorie = append(categorie, "Популярное")
+			cnt++
 		}
 		body := r.FormValue("postText")
+
+		if cnt == 0 {
+			model := models.PostListModel{}
+			model.IsCat = true
+			h.Tmpl.ExecuteTemplate(w, "write.html", model)
+			return
+		}
 
 		if EmptyMessage(title) || EmptyMessage(body) {
 			model := models.PostListModel{}

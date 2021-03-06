@@ -11,6 +11,12 @@
         </script>
     {{end}}
 
+    {{if .IsCat}}
+        <script>
+            alert("вы не выбрали категорию")
+        </script>
+    {{end}}
+
     <h2 style="text-align: center;">Название поста</h2>
     <form method="POST" action="/SavePost">
 

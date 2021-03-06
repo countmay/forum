@@ -12,6 +12,7 @@ type PostListModel struct {
 	Exist    bool
 	Posts    []Post
 	Cat      string
+	IsCat    bool
 }
 
 // EditPostModel ...
