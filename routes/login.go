@@ -89,7 +89,16 @@ func (h *Handler) WriteHandler(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) CategoryLoveHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
+		var authed bool
+		cookie, err := r.Cookie("sessionID")
+		if err != nil {
+			authed = false
+		} else {
+			authed = h.InMemorySession.Authed(cookie.Value)
+		}
+
 		model := models.PostListModel{}
+		model.IsAuthorized = authed
 		model.Cat = "Любовь"
 		PrintPosts()
 		for _, i := range posts {
@@ -111,7 +120,15 @@ func (h *Handler) CategoryLoveHandler(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) CategoryFashionHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
+		var authed bool
+		cookie, err := r.Cookie("sessionID")
+		if err != nil {
+			authed = false
+		} else {
+			authed = h.InMemorySession.Authed(cookie.Value)
+		}
 		model := models.PostListModel{}
+		model.IsAuthorized = authed
 		model.Cat = "Мода"
 		PrintPosts()
 		for _, i := range posts {
@@ -133,7 +150,15 @@ func (h *Handler) CategoryFashionHandler(w http.ResponseWriter, r *http.Request)
 func (h *Handler) CategoryBeautyHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
+		var authed bool
+		cookie, err := r.Cookie("sessionID")
+		if err != nil {
+			authed = false
+		} else {
+			authed = h.InMemorySession.Authed(cookie.Value)
+		}
 		model := models.PostListModel{}
+		model.IsAuthorized = authed
 		model.Cat = "Красота"
 		PrintPosts()
 		for _, i := range posts {
@@ -155,7 +180,15 @@ func (h *Handler) CategoryBeautyHandler(w http.ResponseWriter, r *http.Request) 
 func (h *Handler) CategoryHealthHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
+		var authed bool
+		cookie, err := r.Cookie("sessionID")
+		if err != nil {
+			authed = false
+		} else {
+			authed = h.InMemorySession.Authed(cookie.Value)
+		}
 		model := models.PostListModel{}
+		model.IsAuthorized = authed
 		model.Cat = "Здоровье"
 		PrintPosts()
 		for _, i := range posts {

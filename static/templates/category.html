@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="/static/styles/style.css">
     <title>Category</title>
 </head>
-{{$IsAuthorized:= .IsAuthorized}}
+
 
 <body>
     <form method="GET" action="/write">
         <input type="submit" style="position: absolute; right: 0; margin-top: 15px; margin-right: 10px" id="submit" value="Create post">
     </form>
-
+    {{$IsAuthorized:= .IsAuthorized}}
     <h3 class="header__title">{{.Cat}}</h3>
 
 
